@@ -1,4 +1,4 @@
-const newTasks = JSON.parse(localStorage.getItem('newTasks')) || [] // Todo localStorage implement
+const newTasks = JSON.parse(localStorage.getItem('newTasks')) || [] // TODO1: localStorage implement
 
 var cards = document.querySelectorAll('.card')
 var dropzones = document.querySelectorAll('.dropzone')
@@ -67,10 +67,10 @@ function drop() {
 }
 
 function createCard(type) {
-    const task = prompt('Please write your task below:') ? () => {} : "Star this project on github"
+    const task = prompt('Please write your task below:') || "Star this project on Github" // oh! looks like an easter egg!
 
-    newTasks.push(task)
-    localStorage.setItem('newTasks', JSON.stringify(newTasks))
+    newTasks.push(task) // TODO1
+    localStorage.setItem('newTasks', JSON.stringify(newTasks)) // TODO1
 
     let randcolor = colors[Math.floor(Math.random() * (3 - 0) ) + 0]
 
