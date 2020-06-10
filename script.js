@@ -1,13 +1,36 @@
-const cards = document.querySelectorAll('.card')
-const dropzones = document.querySelectorAll('.dropzone')
-const addCardsButtons = document.querySelectorAll('.material-icons')
+const newTasks = JSON.parse(localStorage.getItem('newTasks')) || [] // Todo localStorage implement
 
-/** cards */
-cards.forEach(card => {
-    card.addEventListener('dragstart', dragstart)
-    // card.addEventListener('drag', drag)
-    card.addEventListener('dragend', dragend)
-})
+var cards = document.querySelectorAll('.card')
+var dropzones = document.querySelectorAll('.dropzone')
+
+const todoDiv = document.getElementById('todoDiv')
+const progressDiv = document.getElementById('progressDiv')
+const doneDiv = document.getElementById('doneDiv')
+
+let colors = ['red', 'green', 'blue']
+
+function load() {
+    cards = document.querySelectorAll('.card')
+    dropzones = document.querySelectorAll('.dropzone')
+
+    /** cards */
+    cards.forEach(card => {
+        card.addEventListener('dragstart', dragstart)
+        // card.addEventListener('drag', drag)
+        card.addEventListener('dragend', dragend)
+    })
+
+    /** dropzones recognition and appends */
+    dropzones.forEach( dropzone => {
+        // dropzone.addEventListener('dragenter', dragenter)
+        dropzone.addEventListener('dragover', dragover)
+        dropzone.addEventListener('dragleave', dragleave)
+        dropzone.addEventListener('drop', drop)
+    })
+
+
+}
+load()
 
 function dragstart() {
     // console.log('CARD: Start dragging ')
@@ -16,11 +39,6 @@ function dragstart() {
     // this = card
     this.classList.add('is-dragging')
 }
-
-// function drag() {
-//     console.log('CARD: Is dragging ')
-// }
-
 function dragend() {
     // console.log('CARD: Stop drag! ')
     dropzones.forEach( dropzone => dropzone.classList.remove('highlight'))
@@ -28,19 +46,6 @@ function dragend() {
     // this = card
     this.classList.remove('is-dragging')
 }
-
-/** dropzones recognition and appends */
-dropzones.forEach( dropzone => {
-    // dropzone.addEventListener('dragenter', dragenter)
-    dropzone.addEventListener('dragover', dragover)
-    dropzone.addEventListener('dragleave', dragleave)
-    dropzone.addEventListener('drop', drop)
-})
-
-// function dragenter() {
-//     console.log('DROPZONE: Enter in zone ')
-// }
-
 function dragover() {
     // this = dropzone
     this.classList.add('is-over')
@@ -51,25 +56,41 @@ function dragover() {
     // this = dropzone
     this.appendChild(cardBeingDragged)
 }
-
 function dragleave() {
     // console.log('DROPZONE: Leave ')
     // this = dropzone
     this.classList.remove('is-over')
 }
-
 function drop() {
     // console.log('DROPZONE: dropped ')
     this.classList.remove('is-over')
 }
 
+function createCard(type) {
+    const task = prompt('Please write your task below:') ? () => {} : "Star this project on github"
 
-/* addCard functions */
-addCardsButtons.forEach( addCardsButton => {
-    addCardsButton.addEventListener('click', addCard)
-})
+    newTasks.push(task)
+    localStorage.setItem('newTasks', JSON.stringify(newTasks))
 
-function addCard() {
-    let task = prompt('What is the name of the task?', 'Start this project on Github')
-    
+    let randcolor = colors[Math.floor(Math.random() * (3 - 0) ) + 0]
+
+    var newCard = [
+        '<div class="card" draggable="true">',
+            `<div class="status ${randcolor}">` + '</div>',
+            '<div class="content">' + task + '</div>',
+        '</div>'
+    ].join("\n");
+
+    switch (type) {
+        case "todo":
+            todoDiv.innerHTML += newCard
+            break
+        case "progress":
+            progressDiv.innerHTML += newCard
+            break
+        case "done":
+            doneDiv.innerHTML += newCard
+            break
+    }
+    load()
 }
