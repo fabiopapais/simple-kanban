@@ -30,9 +30,9 @@ This is a web page made to replicate the most common Kanban templates (Todo, Pro
       <img title="Simple-Kanban Preview"  alt="Simple-Kanban" src="./media/simple-kanban-demo.gif" width="100%">
 </h2>
     
-## Show your support
+<h3>Show your support</h3>  
 
-Give a ⭐️ if this project helped you!
+<p>Give a ⭐️ if this project helped you!</p>
 
 ---
 
