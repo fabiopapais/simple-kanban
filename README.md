@@ -1,5 +1,5 @@
 # simple-kanban
-This is a web page made to replicate the most common Kanban templates (Todo, Progress and Done). It is made for learning purposes, using only HTML, CSS and pure JS.  
+This is a web page that replicates the most common Kanban templates (Todo, Progress and Done). It was made for learning purposes, using only HTML, CSS and pure JS.  
 
 <h2 align='center'>
       <img title="Simple-Kanban Preview"  alt="Simple-Kanban" src="./media/simple-kanban-preview.jpeg" width="100%">
