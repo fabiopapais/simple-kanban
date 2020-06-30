@@ -59,7 +59,6 @@ function dragover() {
     const cardBeingDragged = document.querySelector('.is-dragging')
 
     // localStorage update
-    console.log(this.id)
     storageTasks.map(task => {
         if (task.id == cardBeingDragged.id) {
             task.type = this.id

@@ -13,10 +13,10 @@ body {
     align-items: flex-start;
 }
 .board {
-    background-color: #12191c;
-    border-radius: 8px;
-    /* border: 1px solid #161616; */
-    box-shadow:  23px 23px 45px #090d0e, -23px -23px 45px #1b252a;
+    /* Neumorphism config */ 
+    border-radius: 24px;
+    background: #12191c;
+    box-shadow:  6px 6px 12px #0e1315, -6px -6px 12px #161f23;
 
     min-width: 332px;
     min-height: 200px;
@@ -101,6 +101,7 @@ body {
 .is-dragging {
     opacity: 0.3;
     cursor: move;
+    
 }
 .is-over {
     background: #5efd1f28;
