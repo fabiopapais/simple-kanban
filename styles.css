@@ -10,6 +10,7 @@ body {
 .boards {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
 }
 .board {
     background-color: #12191c;
@@ -45,6 +46,8 @@ body {
     font-size: 18px;
     background-color: #202b30;
 
+    position: relative;
+
     transition: .4s;
 }
 
@@ -64,7 +67,7 @@ body {
 .board .card .status.blue {
     background-color: #6ab0c2;
 }
-.material-icons.md-24 { 
+.add-card { 
     font-size: 24px; 
     margin: 20px 20px;
     color: #fd951f;
@@ -72,8 +75,23 @@ body {
     cursor: pointer;
     transition: 0.4s;
 }
-.material-icons:hover {
+.add-card:hover {
     text-shadow: 0 0 10px #fd951f;
+}
+
+.delete-button {
+    color: #FFF;
+    cursor: pointer;
+    transition: .4s;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    
+    margin: 10px 10px 0 0;
+}
+.delete-button:hover {
+    color: #f74e4e;
 }
 
 .highlight {

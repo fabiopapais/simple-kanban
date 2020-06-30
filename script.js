@@ -1,11 +1,11 @@
-const newTasks = JSON.parse(localStorage.getItem('newTasks')) || []
+const storageTasks = JSON.parse(localStorage.getItem('storageTasks')) || []
 
 var cards = document.querySelectorAll('.card')
 var dropzones = document.querySelectorAll('.dropzone')
 
-const todoDiv = document.getElementById('todoDiv')
-const progressDiv = document.getElementById('progressDiv')
-const doneDiv = document.getElementById('doneDiv')
+const todoDiv = document.getElementById('todo')
+const progressDiv = document.getElementById('progress')
+const doneDiv = document.getElementById('done')
 
 let colors = ['red', 'green', 'blue']
 
@@ -30,8 +30,8 @@ function load(first) {
 
     if (first) {
         // localStorage cards render
-        newTasks.forEach(task => {
-        createCard(task.type, task.name)
+        storageTasks.forEach(task => {
+        createCard(task.id, task.name, task.type)
         })
     }
 }
@@ -58,9 +58,16 @@ function dragover() {
     // get dragging card
     const cardBeingDragged = document.querySelector('.is-dragging')
 
-    console.log(cardBeingDragged)
+    // localStorage update
+    console.log(this.id)
+    storageTasks.map(task => {
+        if (task.id == cardBeingDragged.id) {
+            task.type = this.id
+        }
+    })
+    localStorage.setItem('storageTasks', JSON.stringify(storageTasks))
 
-    // this = dropzone
+    // DOM update
     this.appendChild(cardBeingDragged)
 }
 function dragleave() {
@@ -73,48 +80,46 @@ function drop() {
     this.classList.remove('is-over')
 }
 
-function handleCreateCard(type) {
-    const taskName = prompt('Please write your task below:') || "Star this project on Github" // oh! looks like an easter egg!
 
-    const task = {
-        name: taskName,
-        type: type
+/* Create and Delete cards functions */
+function handleCreateCard(type) {
+    const name = prompt('Please write your task below:') || "Star this project on Github" // oh! looks like an easter egg!
+    let id
+    if (storageTasks.length > 0) {
+        id = storageTasks[storageTasks.length - 1].id + 1 
+    }
+    else {
+        id = 0
     }
 
-    newTasks.push(task) 
-    localStorage.setItem('newTasks', JSON.stringify(newTasks))
+    createCard(id, name, type)
 
-    createCard(type, taskName)
+    task = {
+        id: id,
+        name: name,
+        type: type,
+    }
+
+    //localStorage update
+    storageTasks.push(task) 
+    localStorage.setItem('storageTasks', JSON.stringify(storageTasks))
 }
 
-function createCard(type, task) {
+function createCard(id, name, type) {
     let randcolor = colors[Math.floor(Math.random() * (3 - 0) ) + 0]
 
-    // TODO  test another simple ways to render html
-    // let parser = new DOMParser()
-    // let el = parser.parseFromString(
-    //     `<div class="card" draggable="true">
-    //         <div class="status ${randcolor}"></div>
-    //         <div class="content">${task}</div>
-    //     </div>`
-    // , "text/html")
+    let parser = new DOMParser()
+    let element = parser.parseFromString(
+        `<div class="card" draggable="true" id="${id}">
+            <div class="status ${randcolor}"></div>
+            <div class="content">${name}</div>
+            <span class="material-icons md-24 delete-button" onclick="handleDeleteCard(${id})">
+                delete
+            </span>
+        </div>`
+    , "text/html")
 
-    let card = document.createElement('div')
-    card.classList.add('card')
-    card.setAttribute('draggable', 'true')
-    
-    let status = document.createElement('div')
-    status.classList.add('status')
-    status.classList.add(randcolor)
-
-    let content = document.createElement('div')
-    content.classList.add('content')
-    content.innerHTML = task
-
-    card.appendChild(status)
-    card.appendChild(content)
-
-    console.log(card)
+    let card = element.querySelector(".card")
 
     switch (type) {
         case "todo":
@@ -127,5 +132,33 @@ function createCard(type, task) {
             doneDiv.appendChild(card)
             break
     }
+
     load(false)
+}
+
+function handleDeleteCard(id) {
+    const card = document.getElementById(id)
+
+    let type
+    storageTasks.filter((task, index) => {
+        if (task.id == id) {
+            storageTasks.splice(index, 1)
+            type = task.type
+        }
+    })
+    localStorage.setItem('storageTasks', JSON.stringify(storageTasks))
+
+
+    // DOM update
+    switch (type) {
+        case "todo":
+            todoDiv.removeChild(card)
+            break
+        case "progress":
+            progressDiv.removeChild(card)
+            break
+        case "done":
+            doneDiv.removeChild(card)
+            break
+    }
 }
